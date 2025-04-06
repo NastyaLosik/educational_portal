@@ -3,8 +3,8 @@ import { authService } from "../services/authService";
 
 const register = async (req: Request, res: Response) => {
   try {
-    const { username, password } = req.body;
-    const user = await authService.registerUser(username, password);
+    const { firstName, lastName, username, password, role } = req.body;
+    const user = await authService.registerUser(firstName, lastName, username, password, role );
     const token = authService.generateToken(user._id.toString());
     res.status(201).json({ token });
   } catch (err) {
@@ -24,9 +24,24 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
-
+const getUserData = async (req: Request, res: Response) => {
+  try {
+    const { username } = req.body; 
+    const userData = await authService.getUserData(username);
+    
+    res.status(200).json({
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      username: userData.username,
+      role: userData.role,
+    });
+  } catch (error) {
+    res.status(400).json({ error: error });
+  }
+};
 
 export const authController = {
   register,
   login,
+  getUserData,
 };
