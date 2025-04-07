@@ -40,9 +40,17 @@ const getUserData = async (username: string) => {
   return user; 
 };
 
+const deleteUser = async (username: string) => {
+  const user = await UserModel.findOneAndDelete({ username });
+  if (!user) {
+    throw new Error("Пользователь не найден");
+  }
+};
+
 export const authService = {
   registerUser,
   generateToken,
   loginUser,
   getUserData,
+  deleteUser,
 };

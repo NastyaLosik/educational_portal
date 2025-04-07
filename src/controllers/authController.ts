@@ -40,8 +40,20 @@ const getUserData = async (req: Request, res: Response) => {
   }
 };
 
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { username } = req.body;
+    await authService.deleteUser(username);
+    res.status(200).json({ message: 'Пользователь успешно удален' });
+  } catch (error) {
+    const err = error as Error;
+    res.status(400).json({ error: err.message });
+  }
+};
+
 export const authController = {
   register,
   login,
   getUserData,
+  deleteUser,
 };
